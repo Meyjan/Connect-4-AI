@@ -9,7 +9,7 @@ def checkValidInput(column):
 
 
 def checkValidPosition(board, column):
-    return (checkValidInput() and board[column - 1 + COLUMN_COUNT * (ROW_COUNT - 1)] == 0)
+    return (checkValidInput(column) and board[column - 1 + COLUMN_COUNT * (ROW_COUNT - 1)] == 0)
 
 
 def getOpenRowInColumn(board, column):

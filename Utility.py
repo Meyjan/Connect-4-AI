@@ -13,6 +13,8 @@ def checkValidPosition(board, column):
 
 
 def getOpenRowInColumn(board, column):
+    if (not checkValidPosition(board, column)):
+        return -1
     for i in range(ROW_COUNT):
         if (board[column - 1 + COLUMN_COUNT * i] == 0):
             return (i + 1)

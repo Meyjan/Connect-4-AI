@@ -6,7 +6,7 @@ BLACK = 1
 WHITE = 2
 
 def checkValidInput(column):
-    return (column >= 0 and column < 7)
+    return (column > 0 and column < MAX_COLUMN + 1)
 
 
 def checkValidPosition(board, column):
@@ -19,6 +19,24 @@ def getOpenRowInColumn(board, column):
     for i in range(MAX_ROW):
         if (board[column - 1 + MAX_COLUMN * i] == 0):
             return (i + 1)
+
+def fill(board, number, side):
+    i = number - 1
+    while i < len(board):
+        if(board[i] == 0):
+            board[i] = side
+            break
+        else:
+            i += 7
+    return i
+
+def printBoard(board):
+    init = MAX_ROW * MAX_COLUMN - MAX_COLUMN
+    for i in range(len(board)):
+        print(board[init+i], end = ' ')
+        if(i % MAX_COLUMN == MAX_COLUMN-1):
+            print()
+            init = init - (MAX_COLUMN * 2)
 
 def checkWin(board, lastIdx, side):
     row = lastIdx % MAX_COLUMN

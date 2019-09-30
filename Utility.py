@@ -5,6 +5,9 @@ MAX_COLUMN = 7
 BLACK = 1
 WHITE = 2
 
+def getArrayIndex(row, col):
+    return ((row - 1) * MAX_COLUMN + col - 1)
+
 def checkValidInput(column):
     return (column > 0 and column < MAX_COLUMN + 1)
 

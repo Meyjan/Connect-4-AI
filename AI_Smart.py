@@ -42,8 +42,8 @@ def countWinPossibility(board, columnPut, side):
     
     # Check potential winning condition
     # Horizontal check
-    leftLimit = util.getArrayIndex(rowPut, max(0, columnPut - 3))
-    rightLimit = util.getArrayIndex(rowPut, min(6, columnPut + 3))
+    leftLimit = util.getArrayIndex(rowPut, max(1, columnPut - 3))
+    rightLimit = util.getArrayIndex(rowPut, min(util.MAX_COLUMN, columnPut + 3))
     for i in range(leftLimit, rightLimit):
         if board[i] == side:
             totalScore += 1
@@ -51,17 +51,58 @@ def countWinPossibility(board, columnPut, side):
             totalScore -= 1
 
     # Vertical check
-    bottomLimit = util.getArrayIndex(max(0, rowPut - 3), columnPut)
-    upperLimit = util.getArrayIndex(min(6, rowPut + 3), columnPut)
+    bottomLimit = util.getArrayIndex(max(1, rowPut - 3), columnPut)
+    upperLimit = util.getArrayIndex(min(util.MAX_ROW, rowPut + 3), columnPut)
     for i in range(bottomLimit, upperLimit, 7):
         if board[i] == side:
             totalScore += 1
         if board[i] == enemySide:
             totalScore -= 1
     
-    # Diagonal check
+    # Diagonal incline
     lowerLeftLimit = (rowPut, columnPut)
-    for i in range(0, 3):
+    for i in range(1, 4):
+        if ((rowPut - i) >= 1 and (columnPut - i) >= 1):
+            lowerLeftLimit = (rowPut - i, columnPut - i)
+        else:
+            break
+    lowerLeftLimit = util.getArrayIndex(lowerLeftLimit[0], lowerLeftLimit[1])
+
+    upperRightLimit = (rowPut, columnPut)
+    for i in range(1, 4):
+        if ((rowPut + i ) <= util.MAX_ROW and (columnPut + i) <= util.MAX_COLUMN):
+            upperRightLimit = (rowPut + i, columnPut + i)
+        else:
+            break
+    upperRightLimit = util.getArrayIndex(upperRightLimit[0], upperRightLimit[1])
+    
+    for i in range(lowerLeftLimit, upperRightLimit, 8):
+        if board[i] == side:
+            totalScore += 1
+        if board[i] == enemySide:
+            totalScore -= 1
+    
+    # Diagonal decline
+    upperLeftLimit = (rowPut, columnPut)
+    for i in range(1, 4):
+        if ((rowPut + i) <= util.MAX_ROW and (columnPut - i) >= 1):
+            upperLeftLimit = (rowPut + i, columnPut - i)
+        else:
+            break
+    upperLeftLimit = util.getArrayIndex(upperLeftLimit[0], upperLeftLimit[1])
+
+    lowerRightLimit = (rowPut, columnPut)
+    for i in range(1, 4):
+        if ((rowPut - i) >= 1 and (columnPut + i) <= util.MAX_COLUMN):
+            lowerRightLimit = (rowPut - i, columnPut + i)
+        else:
+            break
+    
+    for i in range(lowerRightLimit, upperLeftLimit, 6):
+        if board[i] == side:
+            totalScore += 1
+        if board[i] == enemySide:
+            totalScore -= 1
 
     
 

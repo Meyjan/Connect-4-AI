@@ -7,6 +7,7 @@ MAX_COLUMN = 7
 BLACK = 1
 WHITE = 2
 
+# Get index utility
 def getArrayIndex(row, col):
     return ((row - 1) * MAX_COLUMN + col - 1)
 

@@ -30,7 +30,7 @@ def aiMove(board, side):
 # Menghitung jumlah langkah yang masih dapat dilakukan walaupun sudah menang
 def countLastStone(board):
     remainingStones = (1 + board.count(0)) // 2
-    return (remainingStones * 1000)
+    return (remainingStones * 100000)
 
 # Menghitung jumlah kemenangan yang mungkin dimiliki oleh user
 def countWinPossibility(board, side):
@@ -70,9 +70,7 @@ def countWinPossibility(board, side):
             lowerLimit = util.getArrayIndex(i, j)
             upperLimit = util.getArrayIndex(i + 3, j - 3)
             totalScore += scoreAssessing(board, side, enemySide, lowerLimit, upperLimit, 6)
-    
-    util.printBoard(board)
-    print(board)
+
     return totalScore
     
     
@@ -95,11 +93,11 @@ def scoreDictionary(meCount, enemyCount):
     if (score == 4):
         return 6000
     elif (score == 3):
-        return 60
+        return 80
     elif (score == 2):
-        return 6
+        return 9
     elif (score == 1):
-        return 1
+        return 3
     elif (score == 0):
         return 0
     elif (score == -1):
@@ -109,35 +107,28 @@ def scoreDictionary(meCount, enemyCount):
     elif (score == -3):
         return -100
     elif (score == -4):
-        return -10000
+        return -15000
 
 # Menghitung nilai dari board sekarang
 def countBoardValue(board, side):
-    print("Called")
     return countWinPossibility(board, side)
 
 # Simple minimax algorithm with alpha-beta pruning
 # -1 means the node is already terminal node and couldn't do anything more
 # Function call:
 # minimaxAlgorithm(board, <Depth Value < 42>, -math.Inf, +math.Inf, <computer Colour>, true)
-def minimaxAlgorithm (board, depth, alpha, beta, side, maximizingPlayer):
+def minimaxAlgorithm (board, depth, alpha, beta, side, maximizingPlayer, initSide):
     # If the board is full, return DRAW
     if (board.count(0) == 0):
         return (-1, 0)
 
     # If the node is terminal, count the end board value
     elif depth == 0:
-        tempSide = 0
-        if (side == util.WHITE):
-            tempSide = util.BLACK
-        else:
-            tempSide = util.WHITE
-        return (-1, countBoardValue(board, tempSide))
+        return (-1, countBoardValue(board, initSide))
 
     # Else, open up new nodes
     else:
         # Generating basic value
-        print("Start")
         value = 0
         bestPath = 0
         if (maximizingPlayer):
@@ -154,8 +145,12 @@ def minimaxAlgorithm (board, depth, alpha, beta, side, maximizingPlayer):
             
             # If win, update the score
             if (util.checkWin(tempBoard, idx, side)):
+                if (side != initSide):
+                    util.printBoard(tempBoard)
                 tempValue = countLastStone(board)
-                tempValue += countBoardValue(board,side)
+                if (side != initSide):
+                    tempValue *= -1
+                tempValue += countBoardValue(board,initSide)
                 eval = (i, tempValue)
             
             # Else get next value
@@ -168,7 +163,7 @@ def minimaxAlgorithm (board, depth, alpha, beta, side, maximizingPlayer):
                     newSide = util.WHITE
 
                 # Evaluation of the node
-                eval = minimaxAlgorithm(tempBoard, (depth - 1), alpha, beta, newSide, not maximizingPlayer)
+                eval = minimaxAlgorithm(tempBoard, (depth - 1), alpha, beta, newSide, not maximizingPlayer, initSide)
             
             # Implementing alpha beta pruning
             if (maximizingPlayer):
@@ -177,7 +172,6 @@ def minimaxAlgorithm (board, depth, alpha, beta, side, maximizingPlayer):
                     value = eval[1]
                 alpha = max(alpha, value)
                 if beta <= alpha:
-                    print("alpha/beta max cutoff in depth:", depth, "column", i, "side", side)
                     break
             else:
                 if (eval[1] < value):
@@ -185,22 +179,6 @@ def minimaxAlgorithm (board, depth, alpha, beta, side, maximizingPlayer):
                     value = eval[1]
                 beta = min(beta, value)
                 if beta <= alpha:
-                    print("alpha/beta min cutoff in depth:", depth, "column", i, "side", side)
                     break
         
-        print("BestPath=", bestPath, "; value=", value)
         return (bestPath, value)
-                
-
-
-# tempBoard = [0] * 42
-# tempBoard[0] = util.BLACK
-# tempBoard[1] = util.WHITE
-# tempBoard[2] = util.WHITE
-# tempBoard[3] = util.WHITE
-# tempBoard[4] = util.WHITE
-# tempBoard[5] = util.BLACK
-# tempBoard[6] = util.BLACK
-# tempBoard[7] = util.BLACK
-# tempBoard[10] = util.WHITE
-# print(util.checkWin(tempBoard, 2, util.WHITE))

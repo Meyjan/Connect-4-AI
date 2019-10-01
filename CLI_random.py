@@ -25,7 +25,7 @@ def main():
             movement = int(input("Error. Enter a correct column number: "))
 
     else:
-        movement, score = ai_smart.minimaxAlgorithm(board, 3, -math.inf, math.inf, enemySide, True)
+        movement, score = ai_smart.minimaxAlgorithm(board, 5, -math.inf, math.inf, enemySide, True, enemySide)
     idx = util.fill(board, movement, side)
     util.printBoard(board)
     print()
@@ -40,7 +40,7 @@ def main():
             while(util.getOpenRowInColumn(board, movement) == -1):
                 movement = int(input("Error. Enter a correct column number: "))
         else:
-            movement, score = ai_smart.minimaxAlgorithm(board, 3, -math.inf, math.inf, enemySide, True)
+            movement, score = ai_smart.minimaxAlgorithm(board, 5, -math.inf, math.inf, enemySide, True, enemySide)
             print("EnemySide =", enemySide)
             print("Movement =", movement)
             print("Score =", score)

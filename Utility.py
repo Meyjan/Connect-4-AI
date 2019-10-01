@@ -6,6 +6,9 @@ MAX_ROW = 6
 MAX_COLUMN = 7
 BLACK = 1
 WHITE = 2
+BOT_RANDOM = 3
+BOT_MINIMAX = 4
+PLAYER = 5
 
 # Get index utility
 def getArrayIndex(row, col):
@@ -43,6 +46,7 @@ def printBoard(board):
         if(i % MAX_COLUMN == MAX_COLUMN-1):
             print()
             init = init - (MAX_COLUMN * 2)
+    print()
 
 def checkWin(board, lastIdx, side):
     row = math.floor(lastIdx / MAX_COLUMN)

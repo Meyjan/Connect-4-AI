@@ -145,8 +145,6 @@ def minimaxAlgorithm (board, depth, alpha, beta, side, maximizingPlayer, initSid
             
             # If win, update the score
             if (util.checkWin(tempBoard, idx, side)):
-                if (side != initSide):
-                    util.printBoard(tempBoard)
                 tempValue = countLastStone(board)
                 if (side != initSide):
                     tempValue *= -1

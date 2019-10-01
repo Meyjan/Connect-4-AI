@@ -9,12 +9,15 @@ for i in range(util.MAX_COLUMN):
     moveAIList.append(i+1)
 
 board = [0] * 42
-board[3] = 1
-board[4] = 1
-board[5] = 2
-board[6] = 2
 board[0] = 2
-board[10] = 1
+board[1] = 1
+board[2] = 1
+board[3] = 2
+board[7] = 1
+board[8] = 1
+board[9] = 2
+board[14] = 1
+board[15] = 2
 
 # Board menggambarkan state board sekarang
 # aiNumber merupakan nomor AI yang direpresentasikan oleh board
@@ -42,33 +45,34 @@ def countWinPossibility(board, side):
     # Check potential winning condition
     # Horizontal check
     for i in range(1, util.MAX_ROW + 1):
-        for j in range(1, util.MAX_COLUMN - 3):
+        for j in range(1, util.MAX_COLUMN - 2):
             lowerLimit = util.getArrayIndex(i, j)
             upperLimit = util.getArrayIndex(i, j + 3)
             totalScore += scoreAssessing(board, side, enemySide, lowerLimit, upperLimit, 1)
 
     # Vertical check
     for i in range(1, util.MAX_COLUMN + 1):
-        for j in range(1, util.MAX_ROW - 3):
+        for j in range(1, util.MAX_ROW - 2):
             lowerLimit = util.getArrayIndex(j, i)
             upperLimit = util.getArrayIndex(j + 3, i)
             totalScore += scoreAssessing(board, side, enemySide, lowerLimit, upperLimit, 7)
     
     # Diagonal ascending check
-    for i in range(1, util.MAX_ROW - 3):
-        for j in range(1, util.MAX_COLUMN - 3):
+    for i in range(1, util.MAX_ROW - 2):
+        for j in range(1, util.MAX_COLUMN - 2):
             lowerLimit = util.getArrayIndex(i, j)
             upperLimit = util.getArrayIndex(i + 3, j + 3)
             totalScore += scoreAssessing(board, side, enemySide, lowerLimit, upperLimit, 8)
 
     # Diagonal descending check
-    for i in range(1, util.MAX_ROW - 3):
+    for i in range(1, util.MAX_ROW - 2):
         for j in range(4, util.MAX_COLUMN + 1):
             lowerLimit = util.getArrayIndex(i, j)
-            upperLimit = util.getArrayIndex(i - 3, j - 3)
+            upperLimit = util.getArrayIndex(i + 3, j - 3)
             totalScore += scoreAssessing(board, side, enemySide, lowerLimit, upperLimit, 6)
     
-    print(totalScore)
+    util.printBoard(board)
+    print(board)
     return totalScore
     
     
@@ -89,13 +93,13 @@ def scoreAssessing(board, side, enemySide, lowLimit, upLimit, skip):
 def scoreDictionary(meCount, enemyCount):
     score = meCount - enemyCount
     if (score == 4):
-        return 10000
+        return 6000
     elif (score == 3):
-        return 100
+        return 60
     elif (score == 2):
-        return 10
+        return 6
     elif (score == 1):
-        return 3
+        return 1
     elif (score == 0):
         return 0
     elif (score == -1):
@@ -109,13 +113,8 @@ def scoreDictionary(meCount, enemyCount):
 
 # Menghitung nilai dari board sekarang
 def countBoardValue(board, side):
-    # return countWinPossibility
-    return 0
-
-# Menghitung nilai dari board saat permainan selesai
-def countEndBoardValue(board, column, side):
-    total = countWinPossibility(board, column, side)
-    return 0
+    print("Called")
+    return countWinPossibility(board, side)
 
 # Simple minimax algorithm with alpha-beta pruning
 # -1 means the node is already terminal node and couldn't do anything more
@@ -128,11 +127,17 @@ def minimaxAlgorithm (board, depth, alpha, beta, side, maximizingPlayer):
 
     # If the node is terminal, count the end board value
     elif depth == 0:
-        return (-1, countBoardValue(board, side))
+        tempSide = 0
+        if (side == util.WHITE):
+            tempSide = util.BLACK
+        else:
+            tempSide = util.WHITE
+        return (-1, countBoardValue(board, tempSide))
 
     # Else, open up new nodes
     else:
         # Generating basic value
+        print("Start")
         value = 0
         bestPath = 0
         if (maximizingPlayer):
@@ -141,20 +146,19 @@ def minimaxAlgorithm (board, depth, alpha, beta, side, maximizingPlayer):
             value = math.inf
 
         for i in range(1, 8):
-            print("Depth = ", depth, "Path = ", i)
 
             # Creating a new board with the child
             tempBoard = copy.copy(board)
             idx = util.fill(tempBoard, i, side)
 
+            
             # If win, update the score
             if (util.checkWin(tempBoard, idx, side)):
                 tempValue = countLastStone(board)
-                tempValue += countBoardValue(board)
-                if not maximizingPlayer:
-                    tempValue *= -1
+                tempValue += countBoardValue(board,side)
                 eval = (i, tempValue)
             
+            # Else get next value
             else:
                 # Getting other side
                 newSide = 0
@@ -173,7 +177,6 @@ def minimaxAlgorithm (board, depth, alpha, beta, side, maximizingPlayer):
                     value = eval[1]
                 alpha = max(alpha, value)
                 if beta <= alpha:
-                    print(alpha, beta)
                     print("alpha/beta max cutoff in depth:", depth, "column", i, "side", side)
                     break
             else:
@@ -184,11 +187,20 @@ def minimaxAlgorithm (board, depth, alpha, beta, side, maximizingPlayer):
                 if beta <= alpha:
                     print("alpha/beta min cutoff in depth:", depth, "column", i, "side", side)
                     break
-        print("Alpha =", alpha, "Beta =", beta)
-
+        
+        print("BestPath=", bestPath, "; value=", value)
         return (bestPath, value)
                 
 
-#minimaxAlgorithm(board, 3, -math.inf, math.inf, 1, True)
-util.printBoard(board)
-countWinPossibility(board, 1)
+
+# tempBoard = [0] * 42
+# tempBoard[0] = util.BLACK
+# tempBoard[1] = util.WHITE
+# tempBoard[2] = util.WHITE
+# tempBoard[3] = util.WHITE
+# tempBoard[4] = util.WHITE
+# tempBoard[5] = util.BLACK
+# tempBoard[6] = util.BLACK
+# tempBoard[7] = util.BLACK
+# tempBoard[10] = util.WHITE
+# print(util.checkWin(tempBoard, 2, util.WHITE))

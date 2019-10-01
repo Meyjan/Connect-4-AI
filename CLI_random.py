@@ -1,5 +1,7 @@
 import Utility as util
+import math
 import AI_Random as ai_random
+import AI_Smart as ai_smart
 
 board = [0] * 42
 #rumus akses data baris ke-i dan kolom ke-j:
@@ -8,8 +10,12 @@ board = [0] * 42
 def main():
     first = False
     playerSide = int(input("Choose Side: \n1. Black\n2. White\n>> "))
+    enemySide = 0
     if(playerSide == util.WHITE):
         first = True
+        enemySide = util.BLACK
+    else:
+        enemySide = util.WHITE
     side = util.WHITE
     print()
     movement = 0
@@ -19,10 +25,11 @@ def main():
             movement = int(input("Error. Enter a correct column number: "))
 
     else:
-        movement = ai_random.aiMove(board)
+        movement, score = ai_smart.minimaxAlgorithm(board, 3, -math.inf, math.inf, enemySide, True)
     idx = util.fill(board, movement, side)
     util.printBoard(board)
     print()
+
     while True:
         if(side == util.WHITE):
             side = util.BLACK
@@ -33,7 +40,10 @@ def main():
             while(util.getOpenRowInColumn(board, movement) == -1):
                 movement = int(input("Error. Enter a correct column number: "))
         else:
-            movement = ai_random.aiMove(board)
+            movement, score = ai_smart.minimaxAlgorithm(board, 3, -math.inf, math.inf, enemySide, True)
+            print("EnemySide =", enemySide)
+            print("Movement =", movement)
+            print("Score =", score)
         idx = util.fill(board, movement, side)
         util.printBoard(board)
         print()

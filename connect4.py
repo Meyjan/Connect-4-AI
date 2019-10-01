@@ -40,20 +40,8 @@ def turn(board,player,column):
     if(line != -1):
         board[line,column] = player
 
-#def game():
-    #board = makeBoard()
-    #turnLeft = 10
-    #player = 1
-    #while(turnLeft > 0):
-        #column = int(input("Enter column 1 - 7: ")) - 1
-        #while((column < 0) or (column > 6)):
-            #print("Column out of range. Enter column 1 - 7: ")
-            #column = int(input("Enter column 1 - 7: ")) - 1
-        #turn(board,player,column)
-        #print(board)
-        #player = (player % 2) + 1
-        #turnLeft -= 1
 
+# Main program
 pygame.init()
 width = COLUMN * SQUARE
 height = (ROW + 1) * SQUARE

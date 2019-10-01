@@ -2,6 +2,8 @@ import Utility as util
 import AI_Random as ai_random
 
 board = [0] * 42
+#rumus akses data baris ke-i dan kolom ke-j:
+# (i-1) * MAX_COLUMN + (j-1)
 
 def main():
     first = False

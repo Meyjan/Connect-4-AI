@@ -30,9 +30,40 @@ def countLastStone(board):
     return remainingStones
 
 # Menghitung jumlah kemenangan yang mungkin dimiliki oleh user
-def countWinPossibility(board, columnPut):
-    for ()
-    return 0
+def countWinPossibility(board, columnPut, side):
+    # Initiate
+    rowPut = util.getOpenRowInColumn(board, columnPut) - 1
+    totalScore = 0
+    enemySide = 0
+    if (side == util.WHITE):
+        enemySide = util.BLACK
+    else:
+        enemySide = util.WHITE
+    
+    # Check potential winning condition
+    # Horizontal check
+    leftLimit = util.getArrayIndex(rowPut, max(0, columnPut - 3))
+    rightLimit = util.getArrayIndex(rowPut, min(6, columnPut + 3))
+    for i in range(leftLimit, rightLimit):
+        if board[i] == side:
+            totalScore += 1
+        if board[i] == enemySide:
+            totalScore -= 1
+
+    # Vertical check
+    bottomLimit = util.getArrayIndex(max(0, rowPut - 3), columnPut)
+    upperLimit = util.getArrayIndex(min(6, rowPut + 3), columnPut)
+    for i in range(bottomLimit, upperLimit, 7):
+        if board[i] == side:
+            totalScore += 1
+        if board[i] == enemySide:
+            totalScore -= 1
+    
+    # Diagonal check
+    lowerLeftLimit = (rowPut, columnPut)
+    for i in range(0, 3):
+
+    
 
 # Menghitung nilai dari board sekarang
 def countBoardValue(board):

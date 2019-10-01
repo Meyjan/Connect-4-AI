@@ -45,16 +45,20 @@ def printBoard(board):
             init = init - (MAX_COLUMN * 2)
 
 def checkWin(board, lastIdx, side):
-    row = lastIdx % MAX_COLUMN
-    col = lastIdx % MAX_ROW
+    row = math.floor(lastIdx / MAX_COLUMN)
+    col = lastIdx - (row * MAX_COLUMN)
     # Check horizontal
     for i in range(MAX_ROW):
+        if (not (i == row)):
+            continue
         for j in range(math.ceil(MAX_COLUMN / 2)):
             if board[i * MAX_COLUMN + j] == side and board[i * MAX_COLUMN + (j+1)] == side and board[i * MAX_COLUMN + (j+2)] == side and board[i * MAX_COLUMN + (j+3)] == side:
                 return True
 
     # Check vertical
     for i in range(MAX_COLUMN):
+        if (not (i == col)):
+            continue
         for j in range(math.ceil(MAX_ROW / 2)):
             if board[j * MAX_COLUMN + i] == side and board[(j+1) * MAX_COLUMN + i] == side and board[(j+2) * MAX_COLUMN + i] == side and board[(j+3) * MAX_COLUMN + i] == side:
                 return True
@@ -62,11 +66,15 @@ def checkWin(board, lastIdx, side):
     # Check positive diagonal
     for i in range(math.ceil(MAX_COLUMN / 2)):
         for j in range(math.ceil(MAX_ROW / 2)):
+            if (lastIdx not in ((j * MAX_COLUMN + i), ((j+1) * MAX_COLUMN + (i+1)), ((j+2) * MAX_COLUMN + (i+2)), ((j+3) * MAX_COLUMN + (i+3)))):
+                continue
             if board[j * MAX_COLUMN + i] == side and board[(j+1) * MAX_COLUMN + (i+1)] == side and board[(j+2) * MAX_COLUMN + (i+2)] == side and board[(j+3) * MAX_COLUMN + (i+3)] == side:
                 return True
 
     # Check negative diagonal
     for i in range(math.ceil(MAX_COLUMN / 2)):
         for j in range(math.ceil(MAX_ROW/2), MAX_ROW):
+            if (lastIdx not in ((j * MAX_COLUMN + i), ((j-1) * MAX_COLUMN + (i+1)), ((j-2) * MAX_COLUMN + (i+2)), ((j-3) * MAX_COLUMN + (i+3)))):
+                continue
             if board[j * MAX_COLUMN + i] == side and board[(j-1) * MAX_COLUMN + (i+1)] == side and board[(j-2) * MAX_COLUMN + (i+2)] == side and board[(j-3) * MAX_COLUMN + (i+3)] == side:
                 return True

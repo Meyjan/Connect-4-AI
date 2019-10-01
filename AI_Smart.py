@@ -44,20 +44,12 @@ def countWinPossibility(board, columnPut, side):
     # Horizontal check
     leftLimit = util.getArrayIndex(rowPut, max(1, columnPut - 3))
     rightLimit = util.getArrayIndex(rowPut, min(util.MAX_COLUMN, columnPut + 3))
-    for i in range(leftLimit, rightLimit):
-        if board[i] == side:
-            totalScore += 1
-        if board[i] == enemySide:
-            totalScore -= 1
+    totalScore += lineAssessing(board, side, enemySide, leftLimit, rightLimit, 1)
 
     # Vertical check
     bottomLimit = util.getArrayIndex(max(1, rowPut - 3), columnPut)
     upperLimit = util.getArrayIndex(min(util.MAX_ROW, rowPut + 3), columnPut)
-    for i in range(bottomLimit, upperLimit, 7):
-        if board[i] == side:
-            totalScore += 1
-        if board[i] == enemySide:
-            totalScore -= 1
+    totalScore += lineAssessing(board, side, enemySide, bottomLimit, upperLimit, 7)
     
     # Diagonal incline
     lowerLeftLimit = (rowPut, columnPut)
@@ -75,12 +67,8 @@ def countWinPossibility(board, columnPut, side):
         else:
             break
     upperRightLimit = util.getArrayIndex(upperRightLimit[0], upperRightLimit[1])
-    
-    for i in range(lowerLeftLimit, upperRightLimit, 8):
-        if board[i] == side:
-            totalScore += 1
-        if board[i] == enemySide:
-            totalScore -= 1
+
+    totalScore += lineAssessing(board, side, enemySide, lowerLeftLimit, upperRightLimit, 8)
     
     # Diagonal decline
     upperLeftLimit = (rowPut, columnPut)
@@ -97,12 +85,20 @@ def countWinPossibility(board, columnPut, side):
             lowerRightLimit = (rowPut - i, columnPut + i)
         else:
             break
+    lowerRightLimit = util.getArrayIndex(lowerRightLimit[0], lowerRightLimit[1])
+
+    totalScore += lineAssessing(board, side, enemySide, lowerRightLimit, upperLeftLimit, 6)
     
-    for i in range(lowerRightLimit, upperLeftLimit, 6):
+    
+
+def lineAssessing(board, side, enemySide, lowLimit, upLimit, skip):
+    totalScore = 0
+    for i in range(lowLimit, upLimit, 6):
         if board[i] == side:
             totalScore += 1
         if board[i] == enemySide:
             totalScore -= 1
+    return totalScore
 
     
 

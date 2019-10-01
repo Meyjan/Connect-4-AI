@@ -30,7 +30,7 @@ def aiMove(board, side):
 # Menghitung jumlah langkah yang masih dapat dilakukan walaupun sudah menang
 def countLastStone(board):
     remainingStones = (1 + board.count(0)) // 2
-    return (remainingStones * 100000)
+    return (remainingStones * 10000)
 
 # Menghitung jumlah kemenangan yang mungkin dimiliki oleh user
 def countWinPossibility(board, side):
@@ -147,7 +147,7 @@ def minimaxAlgorithm (board, depth, alpha, beta, side, maximizingPlayer, initSid
             if (util.checkWin(tempBoard, idx, side)):
                 tempValue = countLastStone(board)
                 if (side != initSide):
-                    tempValue *= -1
+                    tempValue *= -10
                 tempValue += countBoardValue(board,initSide)
                 eval = (i, tempValue)
             

@@ -3,6 +3,7 @@ import numpy
 import pygame
 import pygameMenu
 import sys
+import time
 import Utility as util
 import AI_Random as ai_random
 import AI_Smart as ai_smart
@@ -128,8 +129,8 @@ def play_function(player1, player2, font, test=False):
     global main_menu
     global clock
 
-    f = font.render(player1, 1, COLOR_WHITE)
-    g = font.render(player2, 1, COLOR_WHITE)
+    f = font.render(player1 + " WINS", 1, COLOR_WHITE)
+    g = font.render(player2 + " WINS", 1, COLOR_WHITE)
 
     # Draw random color and text
     bg_color = COLOR_BACKGROUND
@@ -151,6 +152,7 @@ def play_function(player1, player2, font, test=False):
     side = [0] * 2
     idx = 0
     score = 0
+    win = 0
 
     board1 = [0] * util.MAX_ROW * util.MAX_COLUMN
     board2 = makeBoard()
@@ -223,6 +225,8 @@ def play_function(player1, player2, font, test=False):
                     draw(board2, window2)
                     if (util.checkWin(board1, idx, side[1])):
                         gameOver = True
+                        win = "USER"
+                        time.sleep(3)
                     if (idx < util.MAX_ROW * util.MAX_COLUMN):
                         if (player_1 == util.PLAYER):
                             side[0] = player_2
@@ -240,6 +244,8 @@ def play_function(player1, player2, font, test=False):
                     draw(board2, window2)
                     if (util.checkWin(board1, idx, side[1])):
                         gameOver = True
+                        win = "RANDOM BOT"
+                        time.sleep(3)
                     if (idx < util.MAX_ROW * util.MAX_COLUMN):
                         if (player_1 == util.BOT_RANDOM):
                             side[0] = player_2
@@ -255,6 +261,8 @@ def play_function(player1, player2, font, test=False):
                     draw(board2, window2)
                     if (util.checkWin(board1, idx, side[1])):
                         gameOver = True
+                        win = "AI BOT"
+                        time.sleep(3)
                     if (idx < util.MAX_ROW * util.MAX_COLUMN):
                         if (player_1 == util.BOT_MINIMAX):
                             side[0] = player_2
@@ -277,6 +285,11 @@ def play_function(player1, player2, font, test=False):
         if test:
             break
 
+    windowSize = (640 , 480)
+
+    window3 = pygame.display.set_mode(windowSize)
+
+    f = font.render(win + " WINS", 1, COLOR_WHITE)
     window.fill(bg_color)
     window.blit(f, ((WINDOW_SIZE[0] - f_width) / 2, WINDOW_SIZE[1] / 2))
 

@@ -3,22 +3,6 @@ import Utility as util
 import copy
 import math
 
-moveAIList = []
-
-for i in range(util.MAX_COLUMN):
-    moveAIList.append(i+1)
-
-board = [0] * 42
-# board[0] = 2
-# board[1] = 1
-# board[2] = 1
-# board[3] = 2
-# board[7] = 1
-# board[8] = 1
-# board[9] = 2
-# board[14] = 1
-# board[15] = 2
-
 # Board menggambarkan state board sekarang
 # aiNumber merupakan nomor AI yang direpresentasikan oleh board
 def aiMove(board, side):
@@ -72,8 +56,6 @@ def countWinPossibility(board, side):
             totalScore += scoreAssessing(board, side, enemySide, lowerLimit, upperLimit, 6)
 
     return totalScore
-
-
 
 def scoreAssessing(board, side, enemySide, lowLimit, upLimit, skip):
     # Counting
